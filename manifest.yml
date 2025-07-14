@@ -1,0 +1,16 @@
+# Cloud Foundry manifest
+---
+applications:
+- name: background-removal-api
+  memory: 512M
+  disk_quota: 512M
+  instances: 1
+  buildpacks:
+    - python_buildpack
+  command: gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 300 --preload app:app
+  env:
+    FLASK_ENV: production
+    PYTHONUNBUFFERED: 1
+    PYTHONDONTWRITEBYTECODE: 1
+  health-check-type: http
+  health-check-http-endpoint: /health

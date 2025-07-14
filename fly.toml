@@ -1,0 +1,30 @@
+app = "background-removal-api"
+primary_region = "iad"
+
+[build]
+
+[env]
+  FLASK_ENV = "production"
+  PYTHONUNBUFFERED = "1"
+  PYTHONDONTWRITEBYTECODE = "1"
+
+[http_service]
+  internal_port = 5000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  path = "/health"
+  protocol = "http"
+  timeout = "5s"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

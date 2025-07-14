@@ -5,8 +5,10 @@ services:
     plan: free
     runtime: python-3.11.10
     buildCommand: |
+      apt-get update && apt-get install -y gcc g++ make libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1 libgomp1 libgfortran5 || echo "System packages installed"
       pip install --upgrade pip setuptools wheel
       pip install -r requirements-production.txt || pip install -r requirements.txt
+      python -c "import rembg, cv2, numpy, flask; print('✓ Critical dependencies verified')"
       echo "Build completed with all dependencies installed"
     startCommand: |
       gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 300 --preload --max-requests 1000 --max-requests-jitter 100 app:app

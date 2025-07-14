@@ -1,0 +1,27 @@
+# Platform.sh deployment configuration
+name: app
+type: python:3.11
+
+variables:
+    env:
+        FLASK_ENV: production
+        PYTHONUNBUFFERED: 1
+        PYTHONDONTWRITEBYTECODE: 1
+
+dependencies:
+    python3:
+        pipfile: false
+
+hooks:
+    build: |
+        pip install --upgrade pip setuptools wheel
+        pip install -r requirements-production.txt || pip install -r requirements.txt
+
+web:
+    commands:
+        start: "gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 300 --preload app:app"
+    upstream:
+        socket_family: tcp
+        protocol: http
+
+disk: 512
