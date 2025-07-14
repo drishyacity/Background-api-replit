@@ -1,0 +1,36 @@
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Hello World Script"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "hello_world_script"
+
+[[workflows.workflow]]
+name = "Hello World Script"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 index.py"
+
+[[workflows.workflow]]
+name = "hello_world_script"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3 index.py"
