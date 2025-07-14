@@ -1,0 +1,64 @@
+# Deployment Configuration for Background Removal API
+# Compatible with multiple cloud platforms
+
+# Runtime Configuration
+runtime:
+  python_version: "3.11.10"
+  environment: "production"
+  
+# Dependencies
+dependencies:
+  requirements_file: "requirements-production.txt"
+  fallback_requirements: "requirements.txt"
+  
+# Server Configuration
+server:
+  framework: "flask"
+  wsgi_server: "gunicorn"
+  port: 5000
+  workers: 1
+  timeout: 300
+  max_requests: 1000
+  
+# Resource Limits
+resources:
+  memory: "512MB"
+  disk: "512MB"
+  cpu: "0.1"
+  
+# Health Check
+health_check:
+  path: "/health"
+  interval: 30
+  timeout: 10
+  
+# Environment Variables
+env_vars:
+  FLASK_ENV: "production"
+  PYTHONUNBUFFERED: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+  WEB_CONCURRENCY: "1"
+  PYTHONPATH: "."
+  
+# Build Configuration
+build:
+  commands:
+    - "pip install --upgrade pip setuptools wheel"
+    - "pip install -r requirements-production.txt || pip install -r requirements.txt"
+  
+# Deployment Platforms
+platforms:
+  render:
+    config_file: "render.yaml"
+    auto_deploy: true
+    region: "oregon"
+  
+  heroku:
+    config_file: "app.json"
+    stack: "heroku-22"
+    
+  railway:
+    config_file: "railway.json"
+    
+  vercel:
+    config_file: "vercel.json"

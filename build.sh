@@ -1,18 +1,27 @@
 #!/bin/bash
 
-# Complete build script with all exact package versions specified
+# Production build script with all verified package versions
 set -e
 
-echo "Starting build process with all specified package versions..."
+echo "Starting production build process with verified package versions..."
 
 # Update package management
 echo "Updating pip and build tools..."
 pip install --upgrade pip setuptools wheel
 
-# Install core Flask dependencies - EXACT VERSIONS
-echo "Installing core Flask dependencies with exact versions..."
-pip install flask==3.1.1 flask-cors==6.0.1 gunicorn==23.0.0 werkzeug==3.1.3
-pip install pillow==11.3.0 numpy==2.2.6
+# Install from production requirements or fallback to main requirements
+echo "Installing dependencies from requirements file..."
+if [ -f "requirements-production.txt" ]; then
+    echo "Using production requirements..."
+    pip install -r requirements-production.txt
+else
+    echo "Using main requirements..."
+    pip install -r requirements.txt
+fi
+
+# Verify core dependencies are installed
+echo "Verifying core Flask dependencies..."
+python -c "import flask, flask_cors, gunicorn; print('Flask dependencies verified')"
 
 # Install AI Background Removal Libraries - REAL AI MODELS
 echo "Installing AI background removal libraries..."
