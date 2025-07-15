@@ -3,7 +3,7 @@
   "build": {
     "builder": "NIXPACKS"
   },
-  "deploy": 
+  "deploy": {
     "startCommand": "sh -c \"gunicorn run:app --bind 0.0.0.0:${PORT}\"",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 100,
